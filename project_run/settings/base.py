@@ -114,3 +114,7 @@ STATIC_ROOT = 'static'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+COMPANY_NAME = 'Бегун бегуныч'
+SLOGAN = 'Бегаем шустро...как пуля!'
+CONTACTS = 'Город Майами, улица Дуэйн Скала Джонсон, дом 5'
