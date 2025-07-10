@@ -22,10 +22,12 @@ from rest_framework.routers import DefaultRouter
 
 from app_run.views import get_company_details
 from app_run.views import RunViewSet
+from app_run.views import UserViewSet
 
 
 router = DefaultRouter()
 router.register('runs', RunViewSet)
+router.register('users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
