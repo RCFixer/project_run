@@ -16,4 +16,4 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'date_joined', 'username', 'last_name', 'first_name', 'type']
 
     def get_type(self, obj):
-        return self.context['request'].query_params.get('type', 'all')
+        return 'coach' if obj.is_staff is True else 'athlete'
