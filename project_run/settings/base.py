@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'debug_toolbar',
 
-    'app_run'
+    'app_run',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'project_run.urls'
@@ -118,3 +120,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 COMPANY_NAME = 'Бегун бегуныч'
 SLOGAN = 'Бегаем шустро...как пуля!'
 CONTACTS = 'Город Майами, улица Дуэйн Скала Джонсон, дом 5'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
