@@ -24,6 +24,8 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 from app_run.views import get_company_details
 from app_run.views import RunViewSet
 from app_run.views import UserViewSet
+from app_run.views import RunStartView
+from app_run.views import RunStopView
 
 
 router = DefaultRouter()
@@ -33,5 +35,7 @@ router.register('users', UserViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/company_details/', get_company_details),
+    path('api/runs/<int:run_id>/start/', RunStartView.as_view()),
+    path('api/runs/<int:run_id>/stop/', RunStopView.as_view()),
     path('api/', include(router.urls)),
 ] + debug_toolbar_urls()

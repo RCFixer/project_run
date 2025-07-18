@@ -1,12 +1,15 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
+from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import viewsets
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from .models import Run
 from .models import User
+from .models import STATUS
 from .serializers import RunSerializer
 from .serializers import UserSerializer
 
@@ -41,4 +44,25 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(is_staff=False)
         return qs
 
+class RunStartView(APIView):
+    def patch(self, request, run_id):
+        run_object = get_object_or_404(Run, id=run_id)
+        if run_object.status in ['finished', 'in_progress']:
+            data = {'error': 'Run status is not init'},
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        run_object.status = 'in_progress'
+        run_object.save()
+        serializer = RunSerializer(run_object)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+class RunStopView(APIView):
+    def patch(self, request, run_id):
+        run_object = get_object_or_404(Run, id=run_id)
+        if run_object.status != 'in_progress':
+            data = {'error': 'Run status is not in_progress'},
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        run_object.status = 'finished'
+        run_object.save()
+        serializer = RunSerializer(run_object)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
