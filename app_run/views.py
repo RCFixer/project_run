@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 class RunStartView(APIView):
-    def patch(self, request, run_id):
+    def post(self, request, run_id):
         run_object = get_object_or_404(Run, id=run_id)
         if run_object.status in ['finished', 'in_progress']:
             data = {'error': 'Run status is not init'},
@@ -53,11 +53,11 @@ class RunStartView(APIView):
         run_object.status = 'in_progress'
         run_object.save()
         serializer = RunSerializer(run_object)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RunStopView(APIView):
-    def patch(self, request, run_id):
+    def post(self, request, run_id):
         run_object = get_object_or_404(Run, id=run_id)
         if run_object.status != 'in_progress':
             data = {'error': 'Run status is not in_progress'},
@@ -65,4 +65,4 @@ class RunStopView(APIView):
         run_object.status = 'finished'
         run_object.save()
         serializer = RunSerializer(run_object)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_200_OK)
