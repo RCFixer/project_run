@@ -2,18 +2,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
+from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from rest_framework import viewsets
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Run
 from .models import User
-from .models import STATUS
 from .serializers import RunSerializer
 from .serializers import UserSerializer
 
-# Create your views here.
+
+class CommonPagination(PageNumberPagination):
+    page_size_query_param = 'size'
+
+
 @api_view(['GET'])
 def get_company_details(request):
     return Response(
@@ -28,12 +34,18 @@ def get_company_details(request):
 class RunViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.select_related('athlete').all()
     serializer_class = RunSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['status', 'athlete']
+    ordering_fields = ['created_at']
+    pagination_class = CommonPagination
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = [SearchFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['first_name', 'last_name']
+    ordering_fields = ['date_joined']
+    pagination_class = CommonPagination
 
     def get_queryset(self):
         qs = self.queryset.filter(is_superuser=False)
