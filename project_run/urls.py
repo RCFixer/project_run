@@ -26,6 +26,7 @@ from app_run.views import RunViewSet
 from app_run.views import UserViewSet
 from app_run.views import RunStartView
 from app_run.views import RunStopView
+from app_run.views import AthleteInfoView
 
 
 router = DefaultRouter()
@@ -37,5 +38,6 @@ urlpatterns = [
     path('api/company_details/', get_company_details),
     path('api/runs/<int:run_id>/start/', RunStartView.as_view()),
     path('api/runs/<int:run_id>/stop/', RunStopView.as_view()),
+    path('api/athlete_info/<int:user_id>/', AthleteInfoView.as_view()),
     path('api/', include(router.urls)),
 ] + debug_toolbar_urls()

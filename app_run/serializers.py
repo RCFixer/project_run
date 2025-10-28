@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Run
 from .models import User
+from .models import AthleteInfo
 
 class AthleteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_runs_finished(self, obj):
         return obj.runs.filter(status='finished').count()
+
+
+class AthleteInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AthleteInfo
+        fields = '__all__'
