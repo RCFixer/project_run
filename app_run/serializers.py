@@ -31,8 +31,15 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.runs.filter(status='finished').count()
 
 
-class AthleteInfoSerializer(serializers.ModelSerializer):
+class AthleteInfoUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AthleteInfo
         fields = ['goals', 'weight']
+
+
+class AthleteInfoDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AthleteInfo
+        fields = '__all__'

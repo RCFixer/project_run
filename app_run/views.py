@@ -15,7 +15,8 @@ from .models import User
 from .models import AthleteInfo
 from .serializers import RunSerializer
 from .serializers import UserSerializer
-from .serializers import AthleteInfoSerializer
+from .serializers import AthleteInfoDetailSerializer
+from .serializers import AthleteInfoUpdateSerializer
 
 
 class CommonPagination(PageNumberPagination):
@@ -86,7 +87,7 @@ class AthleteInfoView(APIView):
     def put(self, request, user_id):
         user_object = get_object_or_404(User, id=user_id)
         athlete_info, created = AthleteInfo.objects.update_or_create(user_id=user_object)
-        serializer = AthleteInfoSerializer(athlete_info, data=request.data)
+        serializer = AthleteInfoUpdateSerializer(athlete_info, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -95,5 +96,5 @@ class AthleteInfoView(APIView):
     def get(self, request, user_id):
         user_object = get_object_or_404(User, id=user_id)
         athlete_info, created = AthleteInfo.objects.get_or_create(user_id=user_object)
-        serializer = AthleteInfoSerializer(athlete_info)
+        serializer = AthleteInfoDetailSerializer(athlete_info)
         return Response(serializer.data, status=status.HTTP_200_OK)
