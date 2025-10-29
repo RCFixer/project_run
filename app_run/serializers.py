@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Run
 from .models import User
 from .models import AthleteInfo
+from .models import Challenge
 
 class AthleteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +44,9 @@ class AthleteInfoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AthleteInfo
         fields = '__all__'
+
+class ChallengeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Challenge
+        fields = ['full_name', 'athlete']

@@ -24,3 +24,8 @@ class AthleteInfo(models.Model):
         MaxValueValidator(899)
     ], null=True, blank=True)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name='info')
+
+
+class Challenge(models.Model):
+    full_name = models.TextField()
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='challenges')

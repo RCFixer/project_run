@@ -13,10 +13,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Run
 from .models import User
 from .models import AthleteInfo
+from .models import Challenge
 from .serializers import RunSerializer
 from .serializers import UserSerializer
 from .serializers import AthleteInfoDetailSerializer
 from .serializers import AthleteInfoUpdateSerializer
+from .serializers import ChallengeSerializer
 
 
 class CommonPagination(PageNumberPagination):
@@ -79,6 +81,9 @@ class RunStopView(APIView):
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         run_object.status = 'finished'
         run_object.save()
+        count_finished = Run.objects.filter(status='finished', athlete=run_object.athlete).count()
+        if count_finished >= 10:
+            Challenge.objects.create(full_name="Сделай 10 Забегов!", athlete=run_object.athlete)
         serializer = RunSerializer(run_object)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -98,3 +103,16 @@ class AthleteInfoView(APIView):
         athlete_info, created = AthleteInfo.objects.get_or_create(user_id=user_object)
         serializer = AthleteInfoDetailSerializer(athlete_info)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ChallengeView(viewsets.ModelViewSet):
+    queryset = Challenge.objects.all()
+    serializer_class = ChallengeSerializer
+
+    def list(self, request, *args, **kwargs):
+        athlete_id = request.query_params.get('athlete')
+
+        if athlete_id:
+            athlete_object = get_object_or_404(User, id=athlete_id)
+            self.queryset = self.queryset.filter(athlete=athlete_object)
+
+        return super().list(request, *args, **kwargs)

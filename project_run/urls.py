@@ -27,11 +27,13 @@ from app_run.views import UserViewSet
 from app_run.views import RunStartView
 from app_run.views import RunStopView
 from app_run.views import AthleteInfoView
+from app_run.views import ChallengeView
 
 
 router = DefaultRouter()
 router.register('runs', RunViewSet)
 router.register('users', UserViewSet)
+router.register('challenges', ChallengeView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
