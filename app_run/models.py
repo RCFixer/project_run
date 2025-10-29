@@ -21,6 +21,6 @@ class AthleteInfo(models.Model):
     goals = models.TextField(null=True, blank=True)
     weight = models.IntegerField(validators=[
         MinValueValidator(0),
-        MaxValueValidator(899)
+        MaxValueValidator(900)
     ], null=True, blank=True)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name='info')
